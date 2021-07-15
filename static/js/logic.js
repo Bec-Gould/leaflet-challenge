@@ -5,6 +5,8 @@ var colorScale = [
   "#ff6600", "#ff9900", "#ffcc00", "#fff00", "#66ff00", "#33ff00"
 ]
 
+var geoJson2;
+
 d3.json(url).then(response => {
   console.log(response);
   // json = response.json();
@@ -49,7 +51,7 @@ d3.json(url).then(response => {
     onEachFeature: onEachFeature,
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {
-        radius: +feature.properties.mag*3,
+        radius: +feature.properties.mag*5,
         fillColor: getFillColor(+feature.geometry.coordinates[2]),
         color: "#000",
         weight: 1,
@@ -60,6 +62,20 @@ d3.json(url).then(response => {
 
   }).addTo(myMap);
 
+
+  // geoJson2 = L.chloropleth(data, {
+  //   valueProperty: "mag",
+  //   scale:["#ffffb2", "#b10026"],
+  //   steps:10,
+  //   mode: "q",
+  //   style: {        
+  //     color: "#000",
+  //     weight: 1,
+  //     opacity: .33,
+  //     fillOpacity: .66
+
+  //   }
+  // })
 
   function getFillColor(depth) {
     if (depth > 90)
@@ -77,7 +93,7 @@ d3.json(url).then(response => {
 
   function onEachFeature(feature, layer) {
     var popUp = (
-      `<h2>${feature.properties.place}</h2>`
+      `<h2>Details:</h2><hr><h3>${feature.properties.place}</h3>`
     );
     layer.bindPopup(popUp);
   }
